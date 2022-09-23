@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"/>
+    <title>todo</title>
+</head>
+<body>
+    <main >
+
+    <div class="container"> 
+        <h1 class="container__title">Not Started</h1>
+        <ul class="dropArea" data-area="notStarted">
+            <!-- <li class="element" id="br20">
+                <div>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39
+                    <i class="dots"></i>
+                    <ul class="miniMenu">
+                        <li><button class="editCard" data-action="editCard">Editar1</button></li>
+                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="element" id="br19">
+                <div>teste 38 
+                    <i class="dots"></i>
+                    <ul class="miniMenu">
+                        <li><button class="editCard" data-action="editCard">Editar12</button></li>
+                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="element" id="br18">
+                <div>teste 37
+                    <i class="dots"></i>
+                    <ul class="miniMenu">
+                        <li><button class="editCard" data-action="editCard">Editar1</button></li>
+                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+    
+                    </ul>
+                </div> 
+            </li> -->
+            <li class="inputNewCard" ondragstart="return false;" id="g1" draggable="false">
+                <label class="newCardLabel" >
+                    <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                    <button class="addNewCard">Add</button>
+                </label>
+                <label class="editCardLabel">
+                    <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                    <button class="editCardButton">Save</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+
+        <div class="container">
+            <h1 class="container__title">In Progress</h1>
+            <ul class="dropArea" data-area="inProgress">
+                <li class="inputNewCard" ondragstart="return false;" id="g2" draggable="false">
+                    <label class="newCardLabel" >
+                        <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                        <button class="addNewCard">Add</button>
+                        
+                    </label>
+                    <label class="editCardLabel">
+                        <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                        <button class="editCardButton">Save</button>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <h1 class="container__title">Completed</h1>
+            <ul class="dropArea" data-area="completed">
+                <li class="inputNewCard" ondragstart="return false;" id="g3" draggable="false">
+                    <label class="newCardLabel" >
+                        <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                        <button class="addNewCard" >Add</button>
+                    </label>
+                    <label class="editCardLabel">
+                        <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                        <button class="editCardButton">Save</button>
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+</main>
+
+</body>
+<script src="app.js">
+  
+</script>
+</html>

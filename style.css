@@ -1,0 +1,228 @@
+body{
+    margin:0;
+    background-color:#093364;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height:100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.invisible{
+    display:none;
+}
+main{
+    display:flex;
+
+}
+.container{
+    height:fit-content;
+    min-width:320px;
+    width:300px;
+    background-color: rgb(218, 218, 218);
+    margin:.5em;
+    border-radius:3px;
+    border:1px solid black;
+
+}
+h1{
+    font-size: 18px;
+    margin:0;
+    padding:.75em 1em .25em;
+    pointer-events:none;
+}
+ul{
+    padding:0;
+    margin:0;
+}
+li{
+
+    list-style: none;
+}
+.element, .inputNewCard{
+    cursor:grab;
+    padding:.25em .5em;
+    position:relative;
+
+}
+.element:active{
+    cursor:grabbing;
+
+}
+.dropArea > li span{
+    z-index:-10;
+    position:relative;
+    display:block;
+    height:0;
+    margin-bottom:1em;
+    background-color:rgba(128, 128, 128, 0.438);
+    animation:entering .3s linear;
+    animation-delay:.1s;
+    animation-fill-mode: forwards;
+}
+.element div{
+    border-radius:3px;
+    background-color:rgb(255, 255, 255);
+    position:relative;
+    padding:.7em;
+    padding-right:1.5em;
+    transition:.5s;
+    list-style: none;
+    box-shadow:.25px .25px 1px black;
+    line-height:1.2em;
+    font-size: 14px;
+    word-break:break-word;
+
+}
+.inputNewCard{
+    bottom:0;
+    cursor:auto;
+}
+
+li:hover .dots{
+    display:block;
+}
+.dots{
+    display:none;
+    cursor:pointer;
+    background: url(dots.png) no-repeat;
+    position:absolute;
+    right:.1em;
+    bottom:0;
+    transform:translatey(-50%);
+    height:24px;
+    width:24px;
+    /* pointer-events:auto; */
+    top:50%;
+}
+.fa{
+    font-size:16px;
+    margin-right:.35em;
+    pointer-events: none;
+}
+
+.miniMenu li:hover {
+    background-color: rgba(128, 128, 128, 0.603);
+
+}
+
+.miniMenu button{
+    width:100%;
+    text-align:left;
+    padding:.5em;
+    /* margin:.5em 0; */
+    box-sizing: border-box;
+    display:block;
+    border:1px solid #2b7adf;
+    background-color:rgb(44, 44, 44);
+    background-color:#093364;
+    background-color:rgb(26, 26, 26);
+
+    cursor:pointer;
+
+    color:white;
+}
+.miniMenu button:hover{
+    background-color: #2b7adf;
+
+}
+.miniMenu{
+    /* display:none; */
+    cursor:auto;
+    position:absolute;
+
+    top:50%;
+    right:-90px;
+    z-index:20;
+    padding:0 .5em;
+    height:0;
+    display:none;
+   transition:1s;
+
+    
+}
+.dotsOpened ~ .miniMenu, .dotsOpened ~ .miniMenu{
+    height:fit-content;
+    /* visibility:block; */
+    display:block;
+
+    
+
+
+}
+
+.disabled > *, .disabled{
+    pointer-events:none;
+
+}
+label{
+    display:block;
+}
+textarea{
+    resize: none;
+    width:100%;
+    outline:none;
+    padding-bottom:0;
+    box-sizing: border-box;
+    background-color: transparent;
+    border-radius:3px;
+
+
+}
+textarea:hover{
+    background-color: rgb(202, 202, 202);
+}
+textarea::placeholder{
+    background-image:url(plus.png);
+    background-repeat: no-repeat;
+    background-position:.5em center;
+    color:black;
+    opacity:.4;
+    vertical-align: middle;
+    padding-left:2.25em;
+    font-weight: bold;
+    line-height:29px;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+.activedTextarea:hover{
+    background-color: white;
+}
+.activedTextarea::placeholder{
+    background-image:none ;
+    color: transparent;
+
+}
+.activedTextarea{
+    height:64px;
+    background-color: white;
+}
+.activedTextarea ~ button{
+    display:block;
+}
+button, textarea{
+    border:none;
+}
+.addNewCard, .editCardButton{
+    cursor: pointer;
+    width:fit-content;
+    padding:.5em 1.5em;
+    background-color:rgb(0, 100, 214);
+    display:none;
+}
+.editCardLabel{
+    display:none;
+}
+.cardLabel--invisible{
+    display:none;
+}
+.cardLabel--visible{
+    display:block;
+
+}
+
+@keyframes entering {
+    100%{
+        height:30px;
+    }
+
+}
