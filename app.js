@@ -1,8 +1,7 @@
 
-const li = document.querySelectorAll("li")
+// const li = document.querySelectorAll("li")
 
 let dropArea = document.querySelectorAll(".dropArea")
-
 
 let todos = JSON.parse(localStorage.getItem("todos")) || []
     
@@ -13,6 +12,8 @@ const buttonContent =
         inProgress:"In progress",
         completed:"Completed"
     }
+    
+
 
 function isFieldEmpty(field){
     let pattern = /^\s*$/
@@ -28,6 +29,7 @@ function getLocalStorage(){
 
 
 function init({id, status, content}){
+    console.log(id, status)
     let element = createHtmlElement({id, status,content})
     document.querySelector(`[data-area="${status}"]`).insertBefore(element, document.querySelector(`[data-area="${status}"] .inputNewCard`))
 
@@ -38,20 +40,32 @@ function createHtmlElement({id, content, status}){
     let newLi = document.createElement("li")
     newLi.setAttribute("id", id)
     newLi.setAttribute("draggable", true)
-    newLi.setAttribute("class", "element")
+    newLi.classList.add("element")
 
     let moveOptions = statusTodo
     .filter(e=>e !== status)
-            
-            .map(e=>`<li><button class="moveCard" data-button="${e}" data-action="moveCard"><i class="fa fa-arrow-right"></i>${buttonContent[e]}</button></li>`)
-    
+    .map(e=>`
+    <li class="miniMenu__item moveCard" data-button="${e}" data-action="moveCard">
+        <i class="fa fa-arrow-right"></i>
+        ${buttonContent[e]}
+    </li>`
+    )
+    let checkbox = document.querySelector(`.checkAll--label--enable`)?
+    "<input type='checkbox' />":
+    "<input type='checkbox' hidden/>"
+
     newLi.innerHTML = `
-        <div>${content}<i class="dots"></i>
+    <div>
+    <i class="dots"></i>
+        <label class="checkbox">
+            ${checkbox}
+            <span class="checkbox--hidden">${content}</span>
             <ul class="miniMenu">
-                <li><button class="editCard" data-action="editCard"><i class="fa fa-edit"></i>Editar</button></li>
-                <li><button class="removeCard" data-action="removeCard"><i class="fa fa-trash"></i>Excluir</button></li>
+                <li class="miniMenu__item editCard" data-action="editCard"><i class="fa fa-edit"></i>Editar</li>
+                <li class="miniMenu__item removeCard" data-action="removeCard"><i class="fa fa-trash"></i>Excluir</li>
                 ${moveOptions.join("")}
             </ul>
+        </label>
         </div>
             `
     return newLi
@@ -61,9 +75,7 @@ function addNew(textArea){
     // if(textArea.querySelector(".addNewCard").classList.contains("hiddenButton")) return
 
     let value = textArea.value
-    
     if(isFieldEmpty(value)) return
-
     let todo = {
         id:Date.now().toString(),
         status:textArea.parentElement.parentElement.parentElement.dataset.area,
@@ -127,8 +139,6 @@ function updateCardPositionOnArray(target, to){
 
 function editCard(e){
     element = e.target.parentElement.parentElement.parentElement.parentElement
-    // console.log(element, element.id)
-    e.target.parentElement.parentElement.classList.remove("opened")
 
     editCardLabel = element.parentElement.querySelector(".editCardLabel")
     newCardLabel = element.parentElement.querySelector(".newCardLabel")
@@ -138,7 +148,7 @@ function editCard(e){
 
     
     textarea = editCardLabel.querySelector("textarea")
-    content = element.querySelector("div").firstChild
+    content = element.querySelector("div span")
 
     textarea.value = content.textContent
     textarea.focus()
@@ -167,8 +177,12 @@ function editCard(e){
     
 
 }
+function updateButton(button, from){
+    button.setAttribute("data-button", from)
+    button.innerHTML = "<i class='fa fa-arrow-right'></i>" + buttonContent[from]
+}
 function moveCard(e){
-    console.log(e.target)
+
     let element = e.target.parentElement.parentElement.parentElement.parentElement
     let from = element.parentElement.dataset.area
     
@@ -178,8 +192,7 @@ function moveCard(e){
     let dropArea = document.querySelector(`ul[data-area="${e.target.dataset.button}"]`)
     dropArea.insertBefore(element, dropArea.lastElementChild)
 
-    e.target.setAttribute("data-button", from)
-    e.target.lastChild = buttonContent[from]
+    updateButton(e.target, from)
     
 }
 
@@ -206,21 +219,26 @@ document.querySelectorAll(".newCardLabel > textarea").forEach(textArea=>{
 
 })
 document.onclick = e =>{
-    document.querySelector(".dotsOpened")?.classList.remove("dotsOpened")
-    console.log(e.target)
-    
+    document.querySelector(".dotsOpened")?.classList.remove("dotsOpened")    
+    if(e.target.classList.contains("dots")){
+        e.target.classList.toggle("dotsOpened")
 
-        if(e.target.classList.contains("dots")){
-            e.target.classList.add("dotsOpened")
-        }
-    7
+    }
+    
 }
+let deleteChecked = document.querySelector(".deleteChecked")
+
 dropArea.forEach(area=>{
     
     area.onclick = e =>{
         
         if(e.target.dataset.action in buttonActions){
             buttonActions[e.target.dataset.action](e)
+        }
+
+        if(e.target.type === "checkbox" && !e.target.hidden){
+            deleteChecked.disabled = !!!document.querySelector("main [type='checkbox']:checked")
+
         }
         
     }
@@ -237,6 +255,7 @@ dropArea.forEach(area=>{
         }, 0);
 
     }
+
     area.ondrop = e =>{
 
         let data = e.dataTransfer.getData("text")
@@ -249,13 +268,16 @@ dropArea.forEach(area=>{
         if(buttonChange){
             updateCardStatusOnArray(area.dataset.area, data)
 
-            buttonChange.setAttribute("data-button", from)
-            buttonChange.innerHTML = buttonContent[from]
+            // buttonChange.setAttribute("data-button", from)
+            // buttonChange.innerHTML = buttonContent[from]
+            updateButton(buttonChange, from)
+
         }
         e.target.querySelector("span").remove()
         updateCardPositionOnArray(data, e.target.id)
 
     }
+
     area.ondragend = e =>{
         setTimeout(() => {
             e.target.classList.remove("invisible")
@@ -269,6 +291,7 @@ dropArea.forEach(area=>{
 
     area.ondragenter = e =>{
         let span = document.createElement("span")
+        span.classList.add("shadow")
         e.target.insertAdjacentElement("afterBegin", span)
     }
 
@@ -277,3 +300,41 @@ dropArea.forEach(area=>{
 todos.forEach(element=>{
     init({...element})
 })
+
+document.querySelectorAll(".checkAll").forEach(checkall=>{
+    checkall.onclick = e=>{
+        
+        document.querySelectorAll(`[data-area="${checkall.dataset.input}"] input[type="checkbox"]`)
+        .forEach(input=>{
+            input.checked = e.target.checked
+        })
+        deleteChecked.disabled = !!!document.querySelector("main [type='checkbox']:checked")
+        
+    }
+})
+deleteChecked.onclick = button =>{
+    document.querySelectorAll(`ul [type="checkbox"]:checked`).forEach(e=>{
+        e.parentElement.parentElement.parentElement.remove()
+        removeCardFromArray(e.parentElement.parentElement.parentElement.id)
+    })
+    document.querySelectorAll(".checkAll").forEach(checkall=>{
+        checkall.checked = false
+    })
+    button.target.disabled = true
+}
+
+document.querySelector("#enableCheckbox input").onclick = checkall =>{
+    checkall.target.classList.toggle("enabled--all--checkbox")
+
+    document.querySelectorAll(`.container [type="checkbox"]`).forEach(e=>{
+        e.checked = false
+
+        if(e.parentElement.classList.contains("checkAll--label")){
+            e.parentElement.classList.toggle("checkAll--label--enable")
+        }
+
+        e.hidden = !checkall.target.checked
+
+
+    })
+}

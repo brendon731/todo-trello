@@ -7,9 +7,25 @@ body{
     height:100vh;
     font-family: Arial, Helvetica, sans-serif;
 }
+/* .input--hidden{
+    display:none;
+    pointer-events: none;
+    
+} */
 .invisible{
     display:none;
 }
+button{
+    cursor:pointer;
+}
+.deleteChecked{
+    /* background-color:white; */
+    padding:1em;
+    border-radius: 5px;
+    font-size:16px;
+}
+
+
 main{
     display:flex;
 
@@ -21,7 +37,6 @@ main{
     background-color: rgb(218, 218, 218);
     margin:.5em;
     border-radius:3px;
-    border:1px solid black;
 
 }
 h1{
@@ -34,9 +49,33 @@ ul{
     padding:0;
     margin:0;
 }
+.checkAll--label{
+    /* display:none; */
+    height:0;
+    font-size: 0px;
+    transition:.5s;
+}
+.checkAll--label--enable{
+    font-size:16px;
+    /* display:block; */
+    height:fit-content;
+    margin:.5em 0;
+    padding:.5em 1em;
+    /* border:5px solid #093364; */
+    border-bottom: 5px solid #093364;
+    border-top: 5px solid #093364;
+
+}
+input[type="checkbox"]{
+    transition:1s;
+}
 li{
 
     list-style: none;
+}
+
+.element div > label{
+    cursor:grab;
 }
 .element, .inputNewCard{
     cursor:grab;
@@ -48,7 +87,7 @@ li{
     cursor:grabbing;
 
 }
-.dropArea > li span{
+.shadow{
     z-index:-10;
     position:relative;
     display:block;
@@ -59,11 +98,14 @@ li{
     animation-delay:.1s;
     animation-fill-mode: forwards;
 }
-.element div{
+.element div label{
+    padding:.7em;
+
+}
+.element > div{
     border-radius:3px;
     background-color:rgb(255, 255, 255);
     position:relative;
-    padding:.7em;
     padding-right:1.5em;
     transition:.5s;
     list-style: none;
@@ -105,7 +147,7 @@ li:hover .dots{
 
 }
 
-.miniMenu button{
+.miniMenu__item{
     width:100%;
     text-align:left;
     padding:.5em;
@@ -121,7 +163,7 @@ li:hover .dots{
 
     color:white;
 }
-.miniMenu button:hover{
+.miniMenu__item:hover{
     background-color: #2b7adf;
 
 }
@@ -134,20 +176,13 @@ li:hover .dots{
     right:-90px;
     z-index:20;
     padding:0 .5em;
-    height:0;
     display:none;
-   transition:1s;
+    transition:1s;
 
     
 }
-.dotsOpened ~ .miniMenu, .dotsOpened ~ .miniMenu{
-    height:fit-content;
-    /* visibility:block; */
+.dotsOpened ~ label .miniMenu, .dotsOpened ~ label .miniMenu{
     display:block;
-
-    
-
-
 }
 
 .disabled > *, .disabled{

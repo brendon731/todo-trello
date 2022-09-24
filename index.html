@@ -6,48 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="checkbox.css"/>
+    
     <title>todo</title>
 </head>
 <body>
-    <main >
-
+    <label id="enableCheckbox">
+        <input type="checkbox">
+        <span></span>
+        Select mode
+    </label>
+    <button class="deleteChecked" disabled>Delete</button>
+    <main>
     <div class="container"> 
+        
         <h1 class="container__title">Not Started</h1>
+        <label class="checkAll--label">
+            <input hidden type="checkbox" class="checkAll" data-input="notStarted"/>
+            Check all
+        </label>
         <ul class="dropArea" data-area="notStarted">
-            <!-- <li class="element" id="br20">
-                <div>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39
+            <li class="element" id="br20">
+                <div>
+                    <span>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39</span>
                     <i class="dots"></i>
                     <ul class="miniMenu">
-                        <li><button class="editCard" data-action="editCard">Editar1</button></li>
-                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+                        <li class="editCard" data-action="editCard">Editar1</li>
+                        <li class="removeCard" data-action="removeCard">excluir</li>
+                        <li class="moveCard" data-action="moveCard" data-button="inProgress"><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li class="moveCard" data-action="moveCard" data-button="completed">Completed</li>
+    
                     </ul>
                 </div>
             </li>
             <li class="element" id="br19">
-                <div>teste 38 
+                <div><span>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39</span>
                     <i class="dots"></i>
                     <ul class="miniMenu">
-                        <li><button class="editCard" data-action="editCard">Editar12</button></li>
-                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+                        <li class="editCard" data-action="editCard">Editar12</li>
+                        <li class="removeCard" data-action="removeCard">excluir</li>
+                        <li class="moveCard" data-action="moveCard" data-button="inProgress"><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li class="moveCard" data-action="moveCard" data-button="completed">Completed</li>
+    
                     </ul>
                 </div>
             </li>
             <li class="element" id="br18">
-                <div>teste 37
+                <div><span>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39</span>
                     <i class="dots"></i>
                     <ul class="miniMenu">
-                        <li><button class="editCard" data-action="editCard">Editar1</button></li>
-                        <li><button class="removeCard" data-action="removeCard">excluir</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
-                        <li><button class="moveCard" data-action="moveCard" data-button="completed">Completed</button></li>
+                        <li class="editCard" data-action="editCard">Editar123</li>
+                        <li class="removeCard" data-action="removeCard">excluir</li>
+                        <li class="moveCard" data-action="moveCard" data-button="inProgress"><button class="moveCard" data-action="moveCard" data-button="inProgress">In Progress</button></li>
+                        <li class="moveCard" data-action="moveCard" data-button="completed">Completed</li>
     
                     </ul>
                 </div> 
-            </li> -->
+            </li>
             <li class="inputNewCard" ondragstart="return false;" id="g1" draggable="false">
                 <label class="newCardLabel" >
                     <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
@@ -63,6 +78,11 @@
 
         <div class="container">
             <h1 class="container__title">In Progress</h1>
+            <label class="checkAll--label">
+                <input hidden type="checkbox" class="checkAll" data-input="inProgress"/>
+                Check all
+    
+            </label>
             <ul class="dropArea" data-area="inProgress">
                 <li class="inputNewCard" ondragstart="return false;" id="g2" draggable="false">
                     <label class="newCardLabel" >
@@ -79,6 +99,10 @@
         </div>
         <div class="container">
             <h1 class="container__title">Completed</h1>
+            <label class="checkAll--label">
+                <input hidden type="checkbox" class="checkAll" data-input="completed"/>
+                Check all
+            </label>
             <ul class="dropArea" data-area="completed">
                 <li class="inputNewCard" ondragstart="return false;" id="g3" draggable="false">
                     <label class="newCardLabel" >
