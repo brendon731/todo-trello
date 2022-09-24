@@ -7,24 +7,21 @@ body{
     height:100vh;
     font-family: Arial, Helvetica, sans-serif;
 }
-/* .input--hidden{
-    display:none;
-    pointer-events: none;
-    
-} */
+
 .invisible{
     display:none;
 }
 button{
     cursor:pointer;
 }
+button, textarea{
+    border:none;
+}
 .deleteChecked{
-    /* background-color:white; */
     padding:1em;
     border-radius: 5px;
     font-size:16px;
 }
-
 
 main{
     display:flex;
@@ -49,40 +46,44 @@ ul{
     padding:0;
     margin:0;
 }
-.checkAll--label{
-    /* display:none; */
-    height:0;
-    font-size: 0px;
-    transition:.5s;
+.container .checkAll--label, .container [type="checkbox"]{
+    display:none;
 }
-.checkAll--label--enable{
+.checkbox--mode .checkAll--label, .checkbox--mode [type="checkbox"]{
+    display:inline-block;
+
+}
+.checkbox--mode li:hover .dots{
+    display:none;
+}
+
+.element .checkAll--label{
+    padding-right:1.5em;
+
+}
+.checkAll--label{
     font-size:16px;
-    /* display:block; */
     height:fit-content;
+    display:block;
+    width:100%;
     margin:.5em 0;
     padding:.5em 1em;
-    /* border:5px solid #093364; */
     border-bottom: 5px solid #093364;
     border-top: 5px solid #093364;
 
 }
+
 input[type="checkbox"]{
     transition:1s;
 }
 li{
-
     list-style: none;
 }
-
-.element div > label{
-    cursor:grab;
-}
-.element, .inputNewCard{
-    cursor:grab;
+.element{
     padding:.25em .5em;
-    position:relative;
-
+   
 }
+
 .element:active{
     cursor:grabbing;
 
@@ -98,15 +99,20 @@ li{
     animation-delay:.1s;
     animation-fill-mode: forwards;
 }
-.element div label{
+
+.element__label{
+    display:block;
     padding:.7em;
+    cursor:grab;
+}
+.checkbox--mode .element__label{
+    cursor:pointer;
 
 }
 .element > div{
     border-radius:3px;
     background-color:rgb(255, 255, 255);
     position:relative;
-    padding-right:1.5em;
     transition:.5s;
     list-style: none;
     box-shadow:.25px .25px 1px black;
@@ -115,27 +121,11 @@ li{
     word-break:break-word;
 
 }
-.inputNewCard{
-    bottom:0;
-    cursor:auto;
-}
 
 li:hover .dots{
     display:block;
 }
-.dots{
-    display:none;
-    cursor:pointer;
-    background: url(dots.png) no-repeat;
-    position:absolute;
-    right:.1em;
-    bottom:0;
-    transform:translatey(-50%);
-    height:24px;
-    width:24px;
-    /* pointer-events:auto; */
-    top:50%;
-}
+
 .fa{
     font-size:16px;
     margin-right:.35em;
@@ -151,16 +141,13 @@ li:hover .dots{
     width:100%;
     text-align:left;
     padding:.5em;
-    /* margin:.5em 0; */
     box-sizing: border-box;
     display:block;
     border:1px solid #2b7adf;
-    background-color:rgb(44, 44, 44);
-    background-color:#093364;
+    /* background-color:rgb(44, 44, 44);
+    background-color:#093364; */
     background-color:rgb(26, 26, 26);
-
     cursor:pointer;
-
     color:white;
 }
 .miniMenu__item:hover{
@@ -168,10 +155,7 @@ li:hover .dots{
 
 }
 .miniMenu{
-    /* display:none; */
-    cursor:auto;
     position:absolute;
-
     top:50%;
     right:-90px;
     z-index:20;
@@ -181,77 +165,24 @@ li:hover .dots{
 
     
 }
+.dots{
+    display:none;
+    cursor:pointer;
+    background: url(dots.png) no-repeat;
+    position:absolute;
+    right:.1em;
+    bottom:0;
+    transform:translatey(-50%);
+    height:24px;
+    width:24px;
+    top:50%;
+}
 .dotsOpened ~ label .miniMenu, .dotsOpened ~ label .miniMenu{
     display:block;
 }
 
 .disabled > *, .disabled{
     pointer-events:none;
-
-}
-label{
-    display:block;
-}
-textarea{
-    resize: none;
-    width:100%;
-    outline:none;
-    padding-bottom:0;
-    box-sizing: border-box;
-    background-color: transparent;
-    border-radius:3px;
-
-
-}
-textarea:hover{
-    background-color: rgb(202, 202, 202);
-}
-textarea::placeholder{
-    background-image:url(plus.png);
-    background-repeat: no-repeat;
-    background-position:.5em center;
-    color:black;
-    opacity:.4;
-    vertical-align: middle;
-    padding-left:2.25em;
-    font-weight: bold;
-    line-height:29px;
-    font-family:Arial, Helvetica, sans-serif;
-
-}
-.activedTextarea:hover{
-    background-color: white;
-}
-.activedTextarea::placeholder{
-    background-image:none ;
-    color: transparent;
-
-}
-.activedTextarea{
-    height:64px;
-    background-color: white;
-}
-.activedTextarea ~ button{
-    display:block;
-}
-button, textarea{
-    border:none;
-}
-.addNewCard, .editCardButton{
-    cursor: pointer;
-    width:fit-content;
-    padding:.5em 1.5em;
-    background-color:rgb(0, 100, 214);
-    display:none;
-}
-.editCardLabel{
-    display:none;
-}
-.cardLabel--invisible{
-    display:none;
-}
-.cardLabel--visible{
-    display:block;
 
 }
 

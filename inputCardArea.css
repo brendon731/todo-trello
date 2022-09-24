@@ -1,0 +1,59 @@
+.inputCardArea{
+    display:block;
+    padding:.25em .5em;
+}
+textarea{
+    resize: none;
+    width:100%;
+    outline:none;
+    padding-bottom:0;
+    box-sizing: border-box;
+    background-color: transparent;
+    border-radius:3px;
+
+}
+textarea:hover{
+    background-color: rgb(202, 202, 202);
+}
+textarea::placeholder{
+    background-image:url(plus.png);
+    background-repeat: no-repeat;
+    background-position:.5em center;
+    color:black;
+    opacity:.4;
+    vertical-align: middle;
+    padding-left:2.25em;
+    font-weight: bold;
+    line-height:29px;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+.activedTextarea:hover{
+    background-color: white;
+}
+.activedTextarea::placeholder{
+    background-image:none ;
+    color: transparent;
+
+}
+.activedTextarea{
+    height:64px;
+    background-color: white;
+}
+.activedTextarea ~ button{
+    display:block;
+}
+
+.addNewCard, .editCardButton{
+    cursor: pointer;
+    width:fit-content;
+    padding:.5em 1.5em;
+    background-color:rgb(0, 100, 214);
+    display:none;
+}
+.editCardLabel{
+    /* display:block; */
+}
+.cardLabel--invisible{
+    display:none;
+}

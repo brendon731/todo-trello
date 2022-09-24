@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css"/>
-    <link rel="stylesheet" href="checkbox.css"/>
+    <link rel="stylesheet" href="selectMode.css"/>
+    <link rel="stylesheet" href="inputCardArea.css"/>
+
     
     <title>todo</title>
 </head>
@@ -26,7 +28,7 @@
             Check all
         </label>
         <ul class="dropArea" data-area="notStarted">
-            <li class="element" id="br20">
+            <!-- <li class="element" id="br20">
                 <div>
                     <span>teste 39 teste 39 teste 39teste 39teste 39teste 39teste 39teste 39</span>
                     <i class="dots"></i>
@@ -62,17 +64,17 @@
     
                     </ul>
                 </div> 
-            </li>
-            <li class="inputNewCard" ondragstart="return false;" id="g1" draggable="false">
+            </li>--->
+            <li class="inputCardArea" ondragstart="return false;" id="g1" draggable="false">
                 <label class="newCardLabel" >
                     <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
                     <button class="addNewCard">Add</button>
                 </label>
-                <label class="editCardLabel">
+                <label class="editCardLabel cardLabel--invisible">
                     <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
                     <button class="editCardButton">Save</button>
                 </label>
-            </li>
+            </li> 
         </ul>
     </div>
 
@@ -84,13 +86,13 @@
     
             </label>
             <ul class="dropArea" data-area="inProgress">
-                <li class="inputNewCard" ondragstart="return false;" id="g2" draggable="false">
+                <li class="inputCardArea" ondragstart="return false;" id="g2" draggable="false">
                     <label class="newCardLabel" >
                         <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
                         <button class="addNewCard">Add</button>
                         
                     </label>
-                    <label class="editCardLabel">
+                    <label class="editCardLabel cardLabel--invisible">
                         <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
                         <button class="editCardButton">Save</button>
                     </label>
@@ -104,12 +106,12 @@
                 Check all
             </label>
             <ul class="dropArea" data-area="completed">
-                <li class="inputNewCard" ondragstart="return false;" id="g3" draggable="false">
+                <li class="inputCardArea" ondragstart="return false;" id="g3" draggable="false">
                     <label class="newCardLabel" >
                         <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
                         <button class="addNewCard" >Add</button>
                     </label>
-                    <label class="editCardLabel">
+                    <label class="editCardLabel cardLabel--invisible">
                         <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
                         <button class="editCardButton">Save</button>
                     </label>
@@ -120,7 +122,10 @@
 </main>
 
 </body>
-<script src="app.js">
+<script type="module" src="app.js">
+</script>
+<script type="module" src="checkboxButtons.js">
+
   
 </script>
 </html>

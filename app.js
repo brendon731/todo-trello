@@ -1,9 +1,5 @@
-
-// const li = document.querySelectorAll("li")
-
+import {todos} from "./arrayMethods.js"
 let dropArea = document.querySelectorAll(".dropArea")
-
-let todos = JSON.parse(localStorage.getItem("todos")) || []
     
 const statusTodo = ["notStarted", "inProgress", "completed"]
 const buttonContent = 
@@ -12,29 +8,16 @@ const buttonContent =
         inProgress:"In progress",
         completed:"Completed"
     }
-    
-
-
 function isFieldEmpty(field){
     let pattern = /^\s*$/
     return  field.match(pattern)
-
 }
-function setLocalStorage(todos){
-    localStorage.setItem("todos", JSON.stringify(todos))
-}
-function getLocalStorage(){
-    localStorage.getItem("todos")
-}
-
 
 function init({id, status, content}){
-    console.log(id, status)
     let element = createHtmlElement({id, status,content})
-    document.querySelector(`[data-area="${status}"]`).insertBefore(element, document.querySelector(`[data-area="${status}"] .inputNewCard`))
+    document.querySelector(`[data-area="${status}"]`).insertBefore(element, document.querySelector(`[data-area="${status}"] .inputCardArea`))
 
 }
-
 
 function createHtmlElement({id, content, status}){
     let newLi = document.createElement("li")
@@ -50,29 +33,26 @@ function createHtmlElement({id, content, status}){
         ${buttonContent[e]}
     </li>`
     )
-    let checkbox = document.querySelector(`.checkAll--label--enable`)?
-    "<input type='checkbox' />":
-    "<input type='checkbox' hidden/>"
-
     newLi.innerHTML = `
     <div>
     <i class="dots"></i>
-        <label class="checkbox">
-            ${checkbox}
-            <span class="checkbox--hidden">${content}</span>
+
+        <label class="checkbox element__label">
+        <input type='checkbox' data-action="check"/>
+            <span>${content}</span>
             <ul class="miniMenu">
                 <li class="miniMenu__item editCard" data-action="editCard"><i class="fa fa-edit"></i>Editar</li>
                 <li class="miniMenu__item removeCard" data-action="removeCard"><i class="fa fa-trash"></i>Excluir</li>
                 ${moveOptions.join("")}
             </ul>
         </label>
+
         </div>
             `
     return newLi
 }
 
 function addNew(textArea){
-    // if(textArea.querySelector(".addNewCard").classList.contains("hiddenButton")) return
 
     let value = textArea.value
     if(isFieldEmpty(value)) return
@@ -81,7 +61,7 @@ function addNew(textArea){
         status:textArea.parentElement.parentElement.parentElement.dataset.area,
         content:value
     }
-    addCardToArray(todo)
+    todos.addNew(todo)
     init({...todo})
     textArea.value = ""
 }
@@ -96,47 +76,14 @@ function enableAction(){
         e.classList.remove("disabled")
     })
 }
-function addCardToArray(todo){
-    todos.push(todo)
-    setLocalStorage(todos)
-}
-
-function removeCardFromArray(id){
-    todos = todos.filter(element=>element.id !== id)
-    setLocalStorage(todos)
-}
-
-function updateCardStatusOnArray(to, id){
-    todos = todos.map(e=>e.id === id?{...e, status:to}:e)
-    setLocalStorage(todos)
-}
-function updateCardContentOnArray(id, content){
-    todos = todos.map(e=>e.id === id?{...e, content:content}:e)
-    setLocalStorage(todos)
-}
 
 function removeCard(e){
     e.target.parentElement.parentElement.parentElement.parentElement.remove()
-    removeCardFromArray(e.target.parentElement.parentElement.parentElement.parentElement.id)
-}
-function updateCardPositionOnArray(target, to){
-    // console.log(target, to)
-
-    if(!todos.length) return 
-    let targetPosition = todos.findIndex(e=>e.id === target)
-    let targetTodo = todos.splice(targetPosition, 1)
-    let newPosition = todos.findIndex(e=>e.id === to)
-
-    if(newPosition !== -1){
-        todos.splice(newPosition, 0, ...targetTodo)
-    }else{
-        todos.push(...targetTodo)
-    }
-    setLocalStorage(todos)
- 
+    todos.remove(e.target.parentElement.parentElement.parentElement.parentElement.id)
 }
 
 
+let element, editCardLabel, newCardLabel, textarea, content;
 function editCard(e){
     element = e.target.parentElement.parentElement.parentElement.parentElement
 
@@ -144,7 +91,7 @@ function editCard(e){
     newCardLabel = element.parentElement.querySelector(".newCardLabel")
 
     newCardLabel.classList.add("cardLabel--invisible")
-    editCardLabel.classList.add("cardLabel--visible")
+    editCardLabel.classList.remove("cardLabel--invisible")
 
     
     textarea = editCardLabel.querySelector("textarea")
@@ -156,22 +103,22 @@ function editCard(e){
         if(evt.key === "Enter"){
             if(!isFieldEmpty(textarea.value)){
                 content.textContent = textarea.value
-                updateCardContentOnArray(element.id, content.textContent)
+                todos.updateContent(element.id, content.textContent)
 
             }
             textarea.value = ""
-            editCardLabel.classList.remove("cardLabel--visible")
+            editCardLabel.classList.add("cardLabel--invisible")
             newCardLabel.classList.remove("cardLabel--invisible")
         }
     }
     textarea.addEventListener("focusout",()=>{
         if(!isFieldEmpty(textarea.value)){
             content.textContent = textarea.value
-            updateCardContentOnArray(element.id, content.textContent)
+            todos.updateContent(element.id, content.textContent)
 
         }
         textarea.value = ""
-        editCardLabel.classList.remove("cardLabel--visible")
+        editCardLabel.classList.add("cardLabel--invisible")
         newCardLabel.classList.remove("cardLabel--invisible")
     })
     
@@ -186,8 +133,8 @@ function moveCard(e){
     let element = e.target.parentElement.parentElement.parentElement.parentElement
     let from = element.parentElement.dataset.area
     
-    updateCardStatusOnArray(e.target.dataset.button, element.id)
-    updateCardPositionOnArray(element.id, "")
+    todos.updateStatus(e.target.dataset.button, element.id)
+    todos.updatePosition(element.id, "")
 
     let dropArea = document.querySelector(`ul[data-area="${e.target.dataset.button}"]`)
     dropArea.insertBefore(element, dropArea.lastElementChild)
@@ -195,12 +142,16 @@ function moveCard(e){
     updateButton(e.target, from)
     
 }
-
-const buttonActions = {
+function check(){
+    document.querySelector(".deleteChecked").disabled = !document.querySelector("main [type='checkbox']:checked") || !document.querySelector(".checkbox--mode")
+}
+const cardActions = {
     removeCard:(e)=>removeCard(e),
     editCard:(e)=>editCard(e),
-    moveCard:(e)=>moveCard(e)
+    moveCard:(e)=>moveCard(e),
+    check:(e)=>check()
 }
+
 document.querySelectorAll(".newCardLabel > textarea").forEach(textArea=>{
     textArea.onkeydown = evt =>{
         if(evt.key === "Enter"){
@@ -218,28 +169,27 @@ document.querySelectorAll(".newCardLabel > textarea").forEach(textArea=>{
     })
 
 })
+
 document.onclick = e =>{
     document.querySelector(".dotsOpened")?.classList.remove("dotsOpened")    
     if(e.target.classList.contains("dots")){
         e.target.classList.toggle("dotsOpened")
 
     }
-    
 }
-let deleteChecked = document.querySelector(".deleteChecked")
 
 dropArea.forEach(area=>{
     
     area.onclick = e =>{
         
-        if(e.target.dataset.action in buttonActions){
-            buttonActions[e.target.dataset.action](e)
+        if(e.target.dataset.action in cardActions){
+            cardActions[e.target.dataset.action](e)
         }
 
-        if(e.target.type === "checkbox" && !e.target.hidden){
-            deleteChecked.disabled = !!!document.querySelector("main [type='checkbox']:checked")
+        // if(e.target.type === "checkbox"){
+        //     document.querySelector(".deleteChecked").disabled = !!!document.querySelector("main [type='checkbox']:checked") || !!!document.querySelector(".checkbox--mode")
 
-        }
+        // }
         
     }
     area.ondragstart = e =>{
@@ -266,7 +216,7 @@ dropArea.forEach(area=>{
         let buttonChange = document.getElementById(data).querySelector(`[data-button="${area.dataset.area}"]`)
 
         if(buttonChange){
-            updateCardStatusOnArray(area.dataset.area, data)
+            todos.updateStatus(area.dataset.area, data)
 
             // buttonChange.setAttribute("data-button", from)
             // buttonChange.innerHTML = buttonContent[from]
@@ -274,7 +224,7 @@ dropArea.forEach(area=>{
 
         }
         e.target.querySelector("span").remove()
-        updateCardPositionOnArray(data, e.target.id)
+        todos.updatePosition(data, e.target.id)
 
     }
 
@@ -297,44 +247,8 @@ dropArea.forEach(area=>{
 
 })
 
-todos.forEach(element=>{
+todos.todoList.forEach(element=>{
     init({...element})
 })
 
-document.querySelectorAll(".checkAll").forEach(checkall=>{
-    checkall.onclick = e=>{
-        
-        document.querySelectorAll(`[data-area="${checkall.dataset.input}"] input[type="checkbox"]`)
-        .forEach(input=>{
-            input.checked = e.target.checked
-        })
-        deleteChecked.disabled = !!!document.querySelector("main [type='checkbox']:checked")
-        
-    }
-})
-deleteChecked.onclick = button =>{
-    document.querySelectorAll(`ul [type="checkbox"]:checked`).forEach(e=>{
-        e.parentElement.parentElement.parentElement.remove()
-        removeCardFromArray(e.parentElement.parentElement.parentElement.id)
-    })
-    document.querySelectorAll(".checkAll").forEach(checkall=>{
-        checkall.checked = false
-    })
-    button.target.disabled = true
-}
 
-document.querySelector("#enableCheckbox input").onclick = checkall =>{
-    checkall.target.classList.toggle("enabled--all--checkbox")
-
-    document.querySelectorAll(`.container [type="checkbox"]`).forEach(e=>{
-        e.checked = false
-
-        if(e.parentElement.classList.contains("checkAll--label")){
-            e.parentElement.classList.toggle("checkAll--label--enable")
-        }
-
-        e.hidden = !checkall.target.checked
-
-
-    })
-}
