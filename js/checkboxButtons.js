@@ -3,7 +3,6 @@ import {todos} from "./arrayMethods.js"
 
 document.querySelectorAll(".checkAll").forEach(checkall=>{
     checkall.onclick = e=>{
-        
         document.querySelectorAll(`[data-area="${checkall.dataset.input}"] input[type="checkbox"]`)
         .forEach(input=>{
             input.checked = e.target.checked

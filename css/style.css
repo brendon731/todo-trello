@@ -1,0 +1,82 @@
+@import url(./selectMode.css);
+@import url(./inputCardArea.css);
+@import url(./element.css);
+
+
+body{
+    margin:0;
+    background-color:#093364;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height:100vh;
+    margin:auto;
+    width: fit-content;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.invisible{
+    display:none;
+}
+button{
+    cursor:pointer;
+}
+button, textarea{
+    border:none;
+}
+.deleteChecked{
+    padding:1em;
+    border-radius: 5px;
+    font-size:16px;
+}
+
+main{
+    display:flex;
+
+}
+.container{
+    height:fit-content;
+    min-width:320px;
+    width:300px;
+    background-color: rgb(218, 218, 218);
+    margin:.5em;
+    border-radius:3px;
+
+}
+.container__title{
+    font-size: 18px;
+    margin:0;
+    padding:.75em 1em .25em;
+    pointer-events:none;
+}
+ul{
+    padding:0;
+    margin:0;
+}
+li{
+    list-style: none;
+}
+.container .container__checkAll__label, .container [type="checkbox"]{
+    display:none;
+}
+.checkbox--mode .container__checkAll__label, .checkbox--mode [type="checkbox"]{
+    display:inline-block;
+
+}
+.container__checkAll__label{
+    font-size:16px;
+    height:fit-content;
+    display:block;
+    width:100%;
+    margin:.5em 0;
+    padding:.5em 1em;
+    border-bottom: 5px solid #093364;
+    border-top: 5px solid #093364;
+
+}
+
+input[type="checkbox"]{
+    transition:1s;
+}
+
+

@@ -16,7 +16,7 @@ textarea:hover{
     background-color: rgb(202, 202, 202);
 }
 textarea::placeholder{
-    background-image:url(plus.png);
+    background-image:url(../img/plus.png);
     background-repeat: no-repeat;
     background-position:.5em center;
     color:black;
@@ -51,9 +51,7 @@ textarea::placeholder{
     background-color:rgb(0, 100, 214);
     display:none;
 }
-.editCardLabel{
-    /* display:block; */
-}
+
 .cardLabel--invisible{
     display:none;
 }
