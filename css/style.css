@@ -15,7 +15,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     width:fit-content;
 }
-.checkboxButtons{
+header{
     box-sizing: border-box;
     position:sticky;
     top:0;
