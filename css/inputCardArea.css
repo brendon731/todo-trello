@@ -1,5 +1,5 @@
 .inputCardArea{
-    display:block;
+    /* display:block; */
     padding:.25em .5em;
 }
 textarea{
@@ -44,7 +44,7 @@ textarea::placeholder{
     display:block;
 }
 
-.addNewCard, .editCardButton{
+.addNewCardButton, .editCardButton{
     cursor: pointer;
     width:fit-content;
     padding:.5em 1.5em;

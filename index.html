@@ -10,12 +10,14 @@
     <title>todo</title>
 </head>
 <body>
-    <label id="enableCheckbox">
-        <input type="checkbox">
-        <span></span>
-        Select mode
-    </label>
-    <button class="deleteChecked" disabled>Delete</button>
+    <div class="checkboxButtons">
+        <label id="enableCheckbox">
+            <input type="checkbox">
+            <span></span>
+            Select mode
+        </label>
+        <button class="deleteChecked" disabled>Delete</button>
+    </div>
     <main>
         <div class="container"> 
             
@@ -28,7 +30,7 @@
                 <li class="inputCardArea" ondragstart="return false;" id="g1" draggable="false">
                     <label class="newCardLabel" >
                         <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
-                        <button class="addNewCard">Add</button>
+                        <button class="addNewCardButton">Add</button>
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
                         <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
@@ -47,7 +49,7 @@
                 <li class="inputCardArea" ondragstart="return false;" id="g2" draggable="false">
                     <label class="newCardLabel" >
                         <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
-                        <button class="addNewCard">Add</button>
+                        <button class="addNewCardButton">Add</button>
                         
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
@@ -67,7 +69,7 @@
                 <li class="inputCardArea" ondragstart="return false;" id="g3" draggable="false">
                     <label class="newCardLabel" >
                         <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
-                        <button class="addNewCard">Add</button>
+                        <button class="addNewCardButton">Add</button>
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
                         <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>

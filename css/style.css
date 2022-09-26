@@ -5,16 +5,25 @@
 
 body{
     margin:0;
+    padding:0;
     background-color:#093364;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     height:100vh;
     margin:auto;
-    width: fit-content;
     font-family: Arial, Helvetica, sans-serif;
+    width:fit-content;
 }
-
+.checkboxButtons{
+    box-sizing: border-box;
+    position:sticky;
+    top:0;
+    left:0;
+    max-width:calc(100vw - 1em);
+    background-color:#093364;
+    z-index:100;
+}
 .invisible{
     display:none;
 }
@@ -24,6 +33,7 @@ button{
 button, textarea{
     border:none;
 }
+
 .deleteChecked{
     padding:1em;
     border-radius: 5px;
@@ -32,7 +42,6 @@ button, textarea{
 
 main{
     display:flex;
-
 }
 .container{
     height:fit-content;
@@ -64,6 +73,7 @@ li{
 
 }
 .container__checkAll__label{
+    box-sizing:border-box;
     font-size:16px;
     height:fit-content;
     display:block;
