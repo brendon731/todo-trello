@@ -1,8 +1,9 @@
 import {todos} from "./arrayMethods.js"
-import createElement from "./renderElement.js" 
+import render from "./renderElement.js" 
 import {check} from "./checkboxButtons.js"
 
 let dropArea = document.querySelectorAll(".dropArea")
+
 function isFieldEmpty(field){
     let pattern = /^\s*$/
     return  field.match(pattern)
@@ -29,25 +30,12 @@ function addNew(textArea){
         content:value
     }
     todos.addNew(todo)
-    reRender()
+    render()
 }
-let element = ""
-export function reRender(){
-    document.querySelectorAll(".dropArea").forEach(e=>{
-        element = e.querySelector(".inputCardArea") 
-        e.innerHTML = ""
-        e.appendChild(element)
-    })
-    enableAction()
 
-    todos.todoList.forEach(element=>{
-        createElement({...element})
-    })
-    
-}
 function removeCard(e){
-    todos.remove(e.target.dataset.id)
-    reRender()
+    todos.remove(e.target.dataset.id, e.target.dataset.belongsto)
+    render()
 }
 
 let id, belongsTo, editCardLabel, newCardLabel, textarea;
@@ -63,7 +51,7 @@ function editCard(e){
     editCardLabel.classList.remove("cardLabel--invisible")
 
     textarea = editCardLabel.querySelector(`textarea`)
-    textarea.value = todos.todoList.filter(e=>e.id === id).map(e=>e.content)
+    textarea.value = todos.todoList[belongsTo].filter(e=>e.id === id).map(e=>e.content)
     textarea.focus()
 
     textarea.onkeydown = evt =>{
@@ -74,26 +62,26 @@ function editCard(e){
     }
     textarea.addEventListener("focusout",()=>{
         if(!isFieldEmpty(textarea.value)){
-            todos.updateContent(id, textarea.value)
+            todos.updateContent(id, belongsTo,textarea.value)
 
         }
         textarea.value = ""
         editCardLabel.classList.add("cardLabel--invisible")
         newCardLabel.classList.remove("cardLabel--invisible")
-        reRender()
+        render()
     })
 
 }
-function moveCard(targetID, toStatus, toID=""){
-    todos.updatePosition(targetID, toStatus, toID)
-    reRender()
+function moveCard(targetID, status, toStatus, toID=""){
+    todos.updatePosition(targetID, status, toStatus, toID)
+    render()
     
 }
 
 const cardActions = {
     removeCard:(e)=>removeCard(e),
     editCard:(e)=>editCard(e),
-    moveCard:(e)=>moveCard(e.target.dataset.id, e.target.dataset.button),
+    moveCard:(e)=>moveCard(e.target.dataset.id, e.target.dataset.belongsto, e.target.dataset.button),
     check:(e)=>check()
 }
 
@@ -131,6 +119,7 @@ function dragStart(evt){
             
     document.querySelector(".dotsOpened")?.classList.remove("dotsOpened")    
     evt.dataTransfer.setData("text", evt.target.id)
+    evt.dataTransfer.setData("comingFrom", evt.target.dataset.status)
     
     disableAction(".dropArea > li >*")
     
@@ -141,8 +130,11 @@ function dragStart(evt){
 
 function dragDrop(evt, area){
     let data = evt.dataTransfer.getData("text")
+    let status = evt.dataTransfer.getData("comingFrom")
+
     evt.target.querySelector("span").remove()
-    moveCard(data, area.dataset.area, evt.target.id)
+    moveCard(data, status, area.dataset.area, evt.target.id)
+    enableAction()
 
 }
 
@@ -180,7 +172,7 @@ dropArea.forEach(area=>{
     area.ondragenter = e => dragEnter(e)
 
 })
-reRender()
+render()
 
 
 
