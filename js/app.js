@@ -1,13 +1,8 @@
 import {todos} from "./arrayMethods.js"
-import renderElement from "./renderElement.js" 
-let dropArea = document.querySelectorAll(".dropArea")
+import createElement from "./renderElement.js" 
+import {check} from "./checkboxButtons.js"
 
-const buttonContent = 
-    {
-        notStarted:"Not Started",
-        inProgress:"In progress",
-        completed:"Completed"
-    }
+let dropArea = document.querySelectorAll(".dropArea")
 function isFieldEmpty(field){
     let pattern = /^\s*$/
     return  field.match(pattern)
@@ -17,118 +12,111 @@ function disableAction(element){
         e.classList.add("disabled")
     })
 }
-function enableAction(){
+function enableAction(){    
     document.querySelectorAll(".disabled").forEach(e=>{
         e.classList.remove("disabled")
     })
 }
-function updateButtonMoveTo(button, from){
-    button.setAttribute("data-button", from)
-    button.innerHTML = "<i class='fa fa-arrow-right'></i>" + buttonContent[from]
-}
+
 function addNew(textArea){
 
     let value = textArea.value
     if(isFieldEmpty(value)) return
+
     let todo = {
         id:Date.now().toString(),
-        status:textArea.parentElement.parentElement.parentElement.dataset.area,
+        status:textArea.dataset.status,
         content:value
     }
     todos.addNew(todo)
-    renderElement({...todo})
-    textArea.value = ""
+    reRender()
 }
+let element = ""
+export function reRender(){
+    document.querySelectorAll(".dropArea").forEach(e=>{
+        element = e.querySelector(".inputCardArea") 
+        e.innerHTML = ""
+        e.appendChild(element)
+    })
+    enableAction()
 
+    todos.todoList.forEach(element=>{
+        createElement({...element})
+    })
+    
+}
 function removeCard(e){
-    e.target.parentElement.parentElement.parentElement.parentElement.remove()
-    todos.remove(e.target.parentElement.parentElement.parentElement.parentElement.id)
+    todos.remove(e.target.dataset.id)
+    reRender()
 }
 
-let element, editCardLabel, newCardLabel, textarea, content;
+let id, belongsTo, editCardLabel, newCardLabel, textarea;
 function editCard(e){
-    element = e.target.parentElement.parentElement.parentElement.parentElement
+    id = e.target.dataset.id
+    belongsTo = e.target.dataset.belongsto
 
-    editCardLabel = element.parentElement.querySelector(".editCardLabel")
-    newCardLabel = element.parentElement.querySelector(".newCardLabel")
+
+    newCardLabel = document.querySelector(`[data-area="${belongsTo}"] .newCardLabel`)
+    editCardLabel = document.querySelector(`[data-area="${belongsTo}"] .editCardLabel`)
 
     newCardLabel.classList.add("cardLabel--invisible")
     editCardLabel.classList.remove("cardLabel--invisible")
 
-    
-    textarea = editCardLabel.querySelector("textarea")
-    content = element.querySelector("div span")
-
-    textarea.value = content.textContent
+    textarea = editCardLabel.querySelector(`textarea`)
+    textarea.value = todos.todoList.filter(e=>e.id === id).map(e=>e.content)
     textarea.focus()
+
     textarea.onkeydown = evt =>{
         if(evt.key === "Enter"){
-            if(!isFieldEmpty(textarea.value)){
-                content.textContent = textarea.value
-                todos.updateContent(element.id, content.textContent)
-
-            }
-            textarea.value = ""
-            editCardLabel.classList.add("cardLabel--invisible")
-            newCardLabel.classList.remove("cardLabel--invisible")
+            evt.preventDefault()
+            textarea.blur()
         }
     }
     textarea.addEventListener("focusout",()=>{
         if(!isFieldEmpty(textarea.value)){
-            content.textContent = textarea.value
-            todos.updateContent(element.id, content.textContent)
+            todos.updateContent(id, textarea.value)
 
         }
         textarea.value = ""
         editCardLabel.classList.add("cardLabel--invisible")
         newCardLabel.classList.remove("cardLabel--invisible")
+        reRender()
     })
-    
 
 }
-
-function moveCard(e){
-
-    let element = e.target.parentElement.parentElement.parentElement.parentElement
-    let from = element.parentElement.dataset.area
-    
-    todos.updateStatus(e.target.dataset.button, element.id)
-    todos.updatePosition(element.id, "")
-
-    let dropArea = document.querySelector(`ul[data-area="${e.target.dataset.button}"]`)
-    dropArea.insertBefore(element, dropArea.lastElementChild)
-
-    updateButtonMoveTo(e.target, from)
+function moveCard(targetID, toStatus, toID=""){
+    todos.updatePosition(targetID, toStatus, toID)
+    reRender()
     
 }
-function check(){
-    document.querySelector(".deleteChecked").disabled = !document.querySelector("main [type='checkbox']:checked") || !document.querySelector(".checkbox--mode")
-}
+
 const cardActions = {
     removeCard:(e)=>removeCard(e),
     editCard:(e)=>editCard(e),
-    moveCard:(e)=>moveCard(e),
+    moveCard:(e)=>moveCard(e.target.dataset.id, e.target.dataset.button),
     check:(e)=>check()
 }
 
 document.querySelectorAll(".newCardLabel > textarea").forEach(textArea=>{
+    
     textArea.onkeydown = evt =>{
         if(evt.key === "Enter"){
             evt.preventDefault()
-            addNew(textArea)
+            textArea.blur()
+            textArea.focus()
+               
         }
     }
-    textArea.onfocus = inp =>{
-        textArea.classList.add("activedTextarea")}
-
+    textArea.onfocus = () =>{textArea.classList.add("activedTextarea")}
+        
     textArea.addEventListener("focusout", (evt)=>{
         addNew(textArea)
+        textArea.value = ""
         textArea.classList.remove("activedTextarea")
 
     })
-
+    
 })
-
 document.onclick = e =>{
     let actived = document.querySelector(".dotsOpened")
     actived?.classList.remove("dotsOpened")   
@@ -139,13 +127,13 @@ document.onclick = e =>{
 }
 
 function dragStart(evt){
+    if(document.querySelector(".checkbox--mode")) return false
+            
     document.querySelector(".dotsOpened")?.classList.remove("dotsOpened")    
     evt.dataTransfer.setData("text", evt.target.id)
-    evt.dataTransfer.setData("from", evt.target.parentElement.dataset.area)
     
-    disableAction("label")
-    disableAction(".element div")
-
+    disableAction(".dropArea > li >*")
+    
     setTimeout(() => {
         evt.target.classList.add("invisible")
     }, 0);
@@ -153,19 +141,9 @@ function dragStart(evt){
 
 function dragDrop(evt, area){
     let data = evt.dataTransfer.getData("text")
-    let from = evt.dataTransfer.getData("from")
-
-    area.insertBefore(document.getElementById(data), evt.target)
-
-    let buttonChange = document.getElementById(data).querySelector(`[data-button="${area.dataset.area}"]`)
-
-    if(buttonChange){
-        todos.updateStatus(area.dataset.area, data)
-        updateButtonMoveTo(buttonChange, from)
-
-    }
     evt.target.querySelector("span").remove()
-    todos.updatePosition(data, evt.target.id)
+    moveCard(data, area.dataset.area, evt.target.id)
+
 }
 
 function dragEnd(evt){
@@ -184,27 +162,25 @@ function dragEnter(evt){
 dropArea.forEach(area=>{
     
     area.onclick = e =>{
-        
         if(e.target.dataset.action in cardActions){
             cardActions[e.target.dataset.action](e)
         }
     }
-    area.ondragstart = e => dragStart(e)
 
+    area.ondragstart = e => dragStart(e)   
+    
     area.ondrop = e => dragDrop(e, area)
-
+    
     area.ondragend = e => dragEnd(e)
-
+    
     area.ondragover = e => e.preventDefault()
     
     area.ondragleave = e => e.target.querySelector("span").remove()
-
+    
     area.ondragenter = e => dragEnter(e)
 
 })
+reRender()
 
-todos.todoList.forEach(element=>{
-    renderElement({...element})
-})
 
 

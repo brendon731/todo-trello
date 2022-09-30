@@ -10,6 +10,7 @@
     <title>todo</title>
 </head>
 <body>
+<input type="text" hidden id="currentEdit">
     <header>
         <label id="enableCheckbox">
             <input type="checkbox">
@@ -20,7 +21,6 @@
     </header>
     <main>
         <div class="container"> 
-            
             <h1 class="container__title">Not Started</h1>
             <label class="container__checkAll__label">
                 <input hidden type="checkbox" class="checkAll" data-input="notStarted"/>
@@ -29,11 +29,11 @@
             <ul class="dropArea" data-area="notStarted">
                 <li class="inputCardArea" ondragstart="return false;" id="g1" draggable="false">
                     <label class="newCardLabel" >
-                        <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="notStarted" placeholder="Add a new card" ></textarea>
                         <button class="addNewCardButton">Add</button>
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
-                        <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="notStarted" class="activedTextarea" placeholder="Add a new card" ></textarea>
                         <button class="editCardButton">Save</button>
                     </label>
                 </li> 
@@ -48,12 +48,11 @@
             <ul class="dropArea" data-area="inProgress">
                 <li class="inputCardArea" ondragstart="return false;" id="g2" draggable="false">
                     <label class="newCardLabel" >
-                        <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="inProgress" placeholder="Add a new card" ></textarea>
                         <button class="addNewCardButton">Add</button>
-                        
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
-                        <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="inProgress" class="activedTextarea" placeholder="Add a new card" ></textarea>
                         <button class="editCardButton">Save</button>
                     </label>
                 </li>
@@ -68,11 +67,11 @@
             <ul class="dropArea" data-area="completed">
                 <li class="inputCardArea" ondragstart="return false;" id="g3" draggable="false">
                     <label class="newCardLabel" >
-                        <textarea data-action="newCardLabel" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="completed" placeholder="Add a new card" ></textarea>
                         <button class="addNewCardButton">Add</button>
                     </label>
                     <label class="editCardLabel cardLabel--invisible">
-                        <textarea class="activedTextarea" placeholder="Add a new card" ></textarea>
+                        <textarea data-status="completed" class="activedTextarea" placeholder="Add a new card" ></textarea>
                         <button class="editCardButton">Save</button>
                     </label>
                 </li>

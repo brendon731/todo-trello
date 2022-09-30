@@ -15,21 +15,22 @@ function createHtmlElement({id, content, status}){
     let moveOptions = statusTodo
     .filter(e=>e !== status)
     .map(e=>`
-    <li class="miniMenu__item moveCard" data-button="${e}" data-action="moveCard">
+    <li class="miniMenu__item moveCard" data-button="${e}" data-action="moveCard" data-id="${id}">
         <i class="fa fa-arrow-right"></i>
         ${buttonContent[e]}
     </li>`
     )
+     
     newLi.innerHTML = `
     <div>
     <i class="dots"></i>
 
         <label class="checkbox element__label">
-        <input type='checkbox' data-action="check"/>
-            <span>${content}</span>
+        <input type='checkbox' data-action="check" data-id="${id}"/>
+            <span class="elementContent">${content}</span>
             <ul class="miniMenu">
-                <li class="miniMenu__item editCard" data-action="editCard"><i class="fa fa-edit"></i>Editar</li>
-                <li class="miniMenu__item removeCard" data-action="removeCard"><i class="fa fa-trash"></i>Excluir</li>
+                <li class="miniMenu__item editCard" data-action="editCard" data-belongsTo="${status}" data-id="${id}"><i class="fa fa-edit"></i>Editar</li>
+                <li class="miniMenu__item removeCard" data-action="removeCard" data-id="${id}" data-belongsTo="${status}"><i class="fa fa-trash"></i>Excluir</li>
                 ${moveOptions.join("")}
             </ul>
         </label>

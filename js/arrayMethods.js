@@ -16,26 +16,22 @@ export const todos = {
         this.todoList = this.todoList.filter(element=>element.id !== id)
         setLocalStorage(this.todoList)
     },
-
-    updateStatus(to, id){
-        this.todoList = this.todoList.map(e=>e.id === id?{...e, status:to}:e)
-        setLocalStorage(this.todoList)
-    },
     updateContent(id, content){
         this.todoList = this.todoList.map(e=>e.id === id?{...e, content:content}:e)
         setLocalStorage(this.todoList)
     },
-    updatePosition(target, to){
+    updatePosition(targetID, toStatus, toID){
 
         if(!this.todoList.length) return 
-        let targetPosition = this.todoList.findIndex(e=>e.id === target)
+        let targetPosition = this.todoList.findIndex(e=>e.id === targetID)
         let targetTodo = this.todoList.splice(targetPosition, 1)
-        let newPosition = this.todoList.findIndex(e=>e.id === to)
+        targetTodo = {...targetTodo[0], status:toStatus}
 
-        if(newPosition !== -1){
-            this.todoList.splice(newPosition, 0, ...targetTodo)
+        let newPosition = this.todoList.findIndex(e=>e.id === toID)
+        if(newPosition === -1){
+            this.todoList.push(targetTodo)
         }else{
-            this.todoList.push(...targetTodo)
+            this.todoList.splice(newPosition, 0, targetTodo)
         }
         setLocalStorage(this.todoList)
     
