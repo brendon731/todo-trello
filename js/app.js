@@ -1,13 +1,6 @@
-import {todos} from "./arrayMethods.js"
-import render from "./renderElement.js" 
+import {addNewCard, removeCard, editCard, moveCard} from "./actionsFunctions.js"
 import {check} from "./checkboxButtons.js"
 
-let dropArea = document.querySelectorAll(".dropArea")
-
-function isFieldEmpty(field){
-    let pattern = /^\s*$/
-    return  field.match(pattern)
-}
 function disableAction(element){
     document.querySelectorAll(element).forEach(e=>{
         e.classList.add("disabled")
@@ -19,64 +12,6 @@ function enableAction(){
     })
 }
 
-function addNew(textArea){
-
-    let value = textArea.value
-    if(isFieldEmpty(value)) return
-
-    let todo = {
-        id:Date.now().toString(),
-        status:textArea.dataset.status,
-        content:value
-    }
-    todos.addNew(todo)
-    render()
-}
-
-function removeCard(e){
-    todos.remove(e.target.dataset.id, e.target.dataset.belongsto)
-    render()
-}
-
-let id, belongsTo, editCardLabel, newCardLabel, textarea;
-function editCard(e){
-    id = e.target.dataset.id
-    belongsTo = e.target.dataset.belongsto
-
-
-    newCardLabel = document.querySelector(`[data-area="${belongsTo}"] .newCardLabel`)
-    editCardLabel = document.querySelector(`[data-area="${belongsTo}"] .editCardLabel`)
-
-    newCardLabel.classList.add("cardLabel--invisible")
-    editCardLabel.classList.remove("cardLabel--invisible")
-
-    textarea = editCardLabel.querySelector(`textarea`)
-    textarea.value = todos.todoList[belongsTo].filter(e=>e.id === id).map(e=>e.content)
-    textarea.focus()
-
-    textarea.onkeydown = evt =>{
-        if(evt.key === "Enter"){
-            evt.preventDefault()
-            textarea.blur()
-        }
-    }
-    textarea.addEventListener("focusout",()=>{
-        if(!isFieldEmpty(textarea.value)){
-            todos.updateContent(id, belongsTo,textarea.value)
-
-        }
-        textarea.value = ""
-        editCardLabel.classList.add("cardLabel--invisible")
-        newCardLabel.classList.remove("cardLabel--invisible")
-        render()
-    })
-
-}
-function moveCard(targetID, status, toStatus, toID=""){
-    todos.updatePosition(targetID, status, toStatus, toID)
-    render()
-    
-}
 
 const cardActions = {
     removeCard:(e)=>removeCard(e),
@@ -98,7 +33,7 @@ document.querySelectorAll(".newCardLabel > textarea").forEach(textArea=>{
     textArea.onfocus = () =>{textArea.classList.add("activedTextarea")}
         
     textArea.addEventListener("focusout", (evt)=>{
-        addNew(textArea)
+        addNewCard(textArea)
         textArea.value = ""
         textArea.classList.remove("activedTextarea")
 
@@ -151,7 +86,8 @@ function dragEnter(evt){
     evt.target.insertAdjacentElement("afterBegin", span)
 }
 
-dropArea.forEach(area=>{
+
+document.querySelectorAll(".dropArea").forEach(area=>{
     
     area.onclick = e =>{
         if(e.target.dataset.action in cardActions){
@@ -172,7 +108,6 @@ dropArea.forEach(area=>{
     area.ondragenter = e => dragEnter(e)
 
 })
-render()
 
 
 

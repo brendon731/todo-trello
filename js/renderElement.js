@@ -1,6 +1,5 @@
 
 const statusTodo = ["notStarted", "inProgress", "completed"]
-import {todos} from "./arrayMethods.js"
 const buttonContent = 
     {
         notStarted:"Not Started",
@@ -41,10 +40,10 @@ function createElement({id, content, status}){
             `
     return newLi
 }
-export default function render(){
+export default function render(todoList){
     let container, createNewTodoLabel
 
-    Object.keys(todos.todoList).forEach(key=>{
+    Object.keys(todoList).forEach(key=>{
         container = document.querySelector(`[data-area="${key}"]`)
         
         //getting the last element (textarea) before cleaning de ul
@@ -54,7 +53,7 @@ export default function render(){
         container.innerHTML = ""
 
         //adding todos
-        todos.todoList[key].forEach(element=>{
+        todoList[key].forEach(element=>{
 
             container.appendChild(createElement(element))
         })

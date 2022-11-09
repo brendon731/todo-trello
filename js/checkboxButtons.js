@@ -1,7 +1,5 @@
 let deleteChecked = document.querySelector(".deleteChecked")
 import {todos} from "./arrayMethods.js"
-import render from "./renderElement.js"
-
 
 export function check(){
     document.querySelector(".deleteChecked").disabled = !document.querySelector("main [type='checkbox']:checked") || !document.querySelector(".checkbox--mode")
@@ -20,8 +18,6 @@ document.querySelectorAll(".checkAll").forEach(checkall=>{
 
 deleteChecked.onclick = button =>{
     document.querySelectorAll(`ul [type="checkbox"]:checked`).forEach(e=>{todos.remove(e.dataset.id, e.dataset.status)})
-   
-    render()
 }
 document.querySelector("#enableCheckbox input").onclick = checkall =>{
     deleteChecked.disabled = true

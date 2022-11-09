@@ -1,8 +1,16 @@
+import render from "./renderElement.js" 
+
+
 function setLocalStorage(todos){
     localStorage.setItem("todos", JSON.stringify(todos))
 }
 function getLocalStorage(){
     return localStorage.getItem("todos")
+}
+function arrayUpdated(array){
+    setLocalStorage(array)
+    render(array)
+
 }
 let initialValue = {
     notStarted:[],
@@ -11,19 +19,19 @@ let initialValue = {
 }
 export const todos = {
 
- todoList:JSON.parse(getLocalStorage()) || initialValue,
+    todoList:JSON.parse(getLocalStorage()) || initialValue,
 
     addNew(todo){
         this.todoList[todo.status].push(todo)
-        setLocalStorage(this.todoList)
+        arrayUpdated(this.todoList)
     },
     remove(id, status){
         this.todoList[status] = this.todoList[status].filter(element=>element.id !== id)
-        setLocalStorage(this.todoList)
+        arrayUpdated(this.todoList)
     },
     updateContent(id, status, content){
         this.todoList[status] = this.todoList[status].map(e=>e.id === id?{...e, content:content}:e)
-        setLocalStorage(this.todoList)
+        arrayUpdated(this.todoList)
     },
     updatePosition(targetID, status, toStatus, toID){
 
@@ -39,7 +47,10 @@ export const todos = {
         }else{
             this.todoList[toStatus].splice(newPosition, 0, targetTodo)
         }
-        setLocalStorage(this.todoList)
+
+        arrayUpdated(this.todoList)
     
     }
 }
+render(todos.todoList)
+
