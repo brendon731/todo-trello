@@ -1,6 +1,7 @@
 import {addNewCard, removeCard, editCard, moveCard} from "./actionsFunctions.js"
 import {check} from "./checkboxButtons.js"
 
+
 function disableAction(element){
     document.querySelectorAll(element).forEach(e=>{
         e.classList.add("disabled")

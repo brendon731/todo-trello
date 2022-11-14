@@ -1,7 +1,6 @@
-@import url(./selectMode.css);
-@import url(./inputCardArea.css);
-@import url(./element.css);
-
+@import url("./element.css");
+@import url("./inputCardArea.css");
+@import url("./selectMode.css");
 
 body{
     margin:0;
